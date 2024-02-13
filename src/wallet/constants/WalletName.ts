@@ -8,6 +8,7 @@ export const WalletName = {
   COMPASS: "compass",
   COSMOSTATION: "cosmostation",
   METAMASK_INJECTIVE: "metamask-injective",
+  NINJI: "ninji",
   GALAXYSTATION: "galaxystation",
 } as const;
 export type WalletName = (typeof WalletName)[keyof typeof WalletName];

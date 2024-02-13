@@ -1,5 +1,51 @@
 # Changelog
 
+## `v0.0.55`
+
+### Features
+
+- Added tx signing support for Dymension chain
+
+## `v0.0.54`
+
+### Fixes
+
+- Fixed `MnemonicWallet` to generate Injective signatures correctly
+
+## `v0.0.53`
+
+### Fixes
+
+- Fixed `MnemonicWallet` to resolve Injective address correctly
+
+## `v0.0.52`
+
+### Features
+
+- Added Ninji wallet support to execute txs via Ninji extension on Injective network (*does not support wallet connect yet*)
+
+## `v0.0.51`
+
+### Fixes
+
+- Fixed MetaMask on Injective to work correctly with `MsgExecuteContractCompat` when `funds` are empty
+
+## `v0.0.50`
+
+### Fixes
+
+- Fixed the `verifyArbitrary` function to work correctly for all chains, including Injective which uses a different key algorithm
+
+## `v0.0.49`
+
+### Features
+
+- Added the `verifyArbitrary` helper function (exported by `cosmes/wallet`) to verify signatures signed using `ConnectedWallet.signArbitrary`
+
+### Fixes
+
+- Fixed the `recoverPubKeyFromEthSignature` helper function to calculate and use the correct recovery bit when generating the `secp256k1` model
+
 ## `v0.0.48`
 
 ### Features
