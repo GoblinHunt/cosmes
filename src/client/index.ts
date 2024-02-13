@@ -43,3 +43,5 @@ export {
 export { calculateFee } from "./utils/calculateFee";
 export { toAny } from "./utils/toAny";
 export { toBaseAccount } from "./utils/toBaseAccount";
+export { MsgGrantAuthorization } from "./models/MsgGrantAuthorization";
+export { MsgRevokeAuthorization } from "./models/MsgRevokeAuthorization";

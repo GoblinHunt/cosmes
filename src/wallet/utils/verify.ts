@@ -66,4 +66,5 @@ export function verifyArbitrary({
   } catch (err) {
     return false;
   }
+  return false;
 }
