@@ -78,6 +78,9 @@ export class GalaxyStationExtension extends ConnectedWallet {
       if (err instanceof Error) {
         throw err;
       }
+      if (typeof err === "object" && (err as any).error) {
+        throw new Error((err as any).error);
+      }
       throw new Error(
         "Unknown error from Station extension: " + JSON.stringify(err)
       );
