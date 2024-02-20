@@ -45,3 +45,7 @@ export { toAny } from "./utils/toAny";
 export { toBaseAccount } from "./utils/toBaseAccount";
 export { MsgGrantAuthorization } from "./models/MsgGrantAuthorization";
 export { MsgRevokeAuthorization } from "./models/MsgRevokeAuthorization";
+export { MsgDelegate } from "./models/MsgDelegate";
+export { MsgUndelegate } from "./models/MsgUndelegate";
+export { MsgVoteLegacy } from "./models/MsgVoteLegacy";
+export { MsgVote } from "./models/MsgVote";
