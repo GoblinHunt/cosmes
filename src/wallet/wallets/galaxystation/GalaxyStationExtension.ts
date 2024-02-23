@@ -72,6 +72,7 @@ export class GalaxyStationExtension extends ConnectedWallet {
     try {
       return await promise;
     } catch (err) {
+      console.log(err);
       if (typeof err === "string") {
         throw new Error(err);
       }

@@ -12,7 +12,8 @@ import { WalletConnectV2 } from "cosmes/wallet/walletconnect/WalletConnectV2";
 
 const TERRA_CLASSIC_CHAIN_ID = "columbus-5";
 const TERRA_CHAIN_ID = "phoenix-1";
-const TERRA_CHAINS = [TERRA_CLASSIC_CHAIN_ID, TERRA_CHAIN_ID];
+const TERRA_OCTAGON_CHAIN_ID = "octagon-1";
+const TERRA_CHAINS = [TERRA_CLASSIC_CHAIN_ID, TERRA_CHAIN_ID, TERRA_OCTAGON_CHAIN_ID];
 
 export class GalaxyStationController extends WalletController {
   constructor() {
@@ -35,6 +36,7 @@ export class GalaxyStationController extends WalletController {
     // so we simply set the other one manually
     addresses[TERRA_CLASSIC_CHAIN_ID] ??= addresses[TERRA_CHAIN_ID];
     addresses[TERRA_CHAIN_ID] ??= addresses[TERRA_CLASSIC_CHAIN_ID];
+    addresses[TERRA_OCTAGON_CHAIN_ID] ??= addresses[TERRA_CLASSIC_CHAIN_ID];
     for (const { chainId, rpc, gasPrice } of chains) {
       const address = addresses[chainId];
       if (address == null) {

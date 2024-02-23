@@ -3067,6 +3067,10 @@ export {
   QueryBuildAddressResponse as CosmwasmWasmV1QueryBuildAddressResponse,
 } from "./cosmwasm/wasm/v1/query_pb.js";
 export {
+  QueryContractInfoRequest as CosmwasmWasmV1beta1QueryContractInfoRequest,
+  QueryContractInfoResponse as CosmwasmWasmV1beta1QueryContractInfoResponse,
+} from "./terra/wasm/v1beta1/query_pb.js";
+export {
   QueryContractInfoService as CosmwasmWasmV1QueryContractInfoService,
   QueryContractHistoryService as CosmwasmWasmV1QueryContractHistoryService,
   QueryContractsByCodeService as CosmwasmWasmV1QueryContractsByCodeService,
@@ -3080,6 +3084,9 @@ export {
   QueryContractsByCreatorService as CosmwasmWasmV1QueryContractsByCreatorService,
   QueryBuildAddressService as CosmwasmWasmV1QueryBuildAddressService,
 } from "./cosmwasm/wasm/v1/query_cosmes.js";
+export {
+  QueryContractInfoService as CosmwasmWasmV1beta1QueryContractInfoService,
+} from "./terra/wasm/v1beta1/query_cosmes.js";
 export {
   StoreCodeProposal as CosmwasmWasmV1StoreCodeProposal,
   InstantiateContractProposal as CosmwasmWasmV1InstantiateContractProposal,
