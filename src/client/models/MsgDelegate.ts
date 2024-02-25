@@ -19,7 +19,7 @@ export class MsgDelegate implements Adapter {
 
   public toAmino() {
     return {
-      type: "cosmos-sdk/MsgSend",
+      type: "cosmos-sdk/MsgDelegate",
       value: {
         delegator_address: this.data.delegatorAddress,
         validator_address: this.data.validatorAddress,

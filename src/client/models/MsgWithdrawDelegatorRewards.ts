@@ -1,12 +1,12 @@
 import { PlainMessage } from "@bufbuild/protobuf";
-import { CosmosStakingV1beta1MsgUndelegate as ProtoMsgUndelegate } from "cosmes/protobufs";
+import { CosmosDistributionV1beta1MsgWithdrawDelegatorReward as ProtoMsgWithdrawDelegatorRewards } from "cosmes/protobufs";
 
 import { DeepPrettify } from "../../typeutils/prettify";
 import { Adapter } from "./Adapter";
 
-type Data = DeepPrettify<PlainMessage<ProtoMsgUndelegate>>;
+type Data = DeepPrettify<PlainMessage<ProtoMsgWithdrawDelegatorRewards>>;
 
-export class MsgUndelegate implements Adapter {
+export class MsgWithdrawDelegatorRewards implements Adapter {
   private readonly data: Data;
 
   constructor(data: Data) {
@@ -14,16 +14,15 @@ export class MsgUndelegate implements Adapter {
   }
 
   public toProto() {
-    return new ProtoMsgUndelegate(this.data);
+    return new ProtoMsgWithdrawDelegatorRewards(this.data);
   }
 
   public toAmino() {
     return {
-      type: "cosmos-sdk/MsgUndelegate",
+      type: "cosmos-sdk/MsgWithdrawDelegatorRewards",
       value: {
         delegator_address: this.data.delegatorAddress,
         validator_address: this.data.validatorAddress,
-        amount: this.data.amount,
         },
     };
   }

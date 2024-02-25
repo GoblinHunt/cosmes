@@ -50,5 +50,7 @@ export { MsgGrantAuthorization } from "./models/MsgGrantAuthorization";
 export { MsgRevokeAuthorization } from "./models/MsgRevokeAuthorization";
 export { MsgDelegate } from "./models/MsgDelegate";
 export { MsgUndelegate } from "./models/MsgUndelegate";
+export { MsgBeginRedelegate } from "./models/MsgBeginRedelegate";
+export { MsgWithdrawDelegatorRewards } from "./models/MsgWithdrawDelegatorRewards";
 export { MsgVoteLegacy } from "./models/MsgVoteLegacy";
 export { MsgVote } from "./models/MsgVote";
