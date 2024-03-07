@@ -25,11 +25,11 @@ export class MsgEditValidator implements Adapter {
         commission_rate: this.data.commissionRate ? this.data.commissionRate.toString() : undefined,
         min_self_delegation: this.data.minSelfDelegation ? this.data.minSelfDelegation.toString() : undefined,
         description: {
-          moniker: this.data.description?.moniker || '[do-not-modify]',
-          identity: this.data.description?.identity || '[do-not-modify]',
-          website: this.data.description?.website || '[do-not-modify]',
-          security_contact: this.data.description?.securityContact || '[do-not-modify]',
-          details: this.data.description?.details || '[do-not-modify]',
+          moniker: this.data.description?.moniker ?? '[do-not-modify]',
+          identity: this.data.description?.identity ?? '[do-not-modify]',
+          website: this.data.description?.website ?? '[do-not-modify]',
+          security_contact: this.data.description?.securityContact ?? '[do-not-modify]',
+          details: this.data.description?.details ?? '[do-not-modify]',
         },
       },
     };
