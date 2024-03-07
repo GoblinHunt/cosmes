@@ -72,14 +72,14 @@ export class StationExtension extends ConnectedWallet {
     try {
       return await promise;
     } catch (err) {
-      console.log(err);
+      console.log('received err', err);
       if (typeof err === "string") {
         throw new Error(err);
       }
       if (err instanceof Error) {
         throw err;
       }
-      if (typeof err === "object" && (err as any).error) {
+      if (typeof err === "object" && (err as any).error && typeof (err as any).error === "string") {
         throw new Error((err as any).error);
       }
       throw new Error(

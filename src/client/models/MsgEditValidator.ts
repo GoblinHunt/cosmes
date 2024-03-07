@@ -19,17 +19,17 @@ export class MsgEditValidator implements Adapter {
 
   public toAmino() {
     return {
-      type: "cosmos-sdk/MsgEditValidator",
+      type: "staking/MsgEditValidator",
       value: {
         validator_address: this.data.validatorAddress,
         commission_rate: this.data.commissionRate ? this.data.commissionRate.toString() : undefined,
         min_self_delegation: this.data.minSelfDelegation ? this.data.minSelfDelegation.toString() : undefined,
         description: {
-          moniker: this.data.description?.moniker,
-          identity: this.data.description?.identity,
-          website: this.data.description?.website,
-          security_contact: this.data.description?.securityContact,
-          details: this.data.description?.details,
+          moniker: this.data.description?.moniker || '[do-not-modify]',
+          identity: this.data.description?.identity || '[do-not-modify]',
+          website: this.data.description?.website || '[do-not-modify]',
+          security_contact: this.data.description?.securityContact || '[do-not-modify]',
+          details: this.data.description?.details || '[do-not-modify]',
         },
       },
     };
