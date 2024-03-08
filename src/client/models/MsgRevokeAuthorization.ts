@@ -1,20 +1,15 @@
 import { PlainMessage } from "@bufbuild/protobuf";
-import { utf8 } from "cosmes/codec";
 import { CosmosAuthzV1beta1MsgRevoke as ProtoMsgRevoke } from "cosmes/protobufs";
 
-import { DeepPrettify, Prettify } from "../../typeutils/prettify";
+import { DeepPrettify } from "../../typeutils/prettify";
 import { Adapter } from "./Adapter";
 
-type Data<T> = Prettify<
-  DeepPrettify<Omit<PlainMessage<ProtoMsgRevoke>, "msg">> & {
-    msg: T;
-  }
->;
+type Data = DeepPrettify<PlainMessage<ProtoMsgRevoke>>;
 
 export class MsgRevokeAuthorization<T> implements Adapter {
-  private readonly data: Data<T>;
+  private readonly data: Data;
 
-  constructor(data: Data<T>) {
+  constructor(data: Data) {
     this.data = data;
   }
 

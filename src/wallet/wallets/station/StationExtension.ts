@@ -82,6 +82,9 @@ export class StationExtension extends ConnectedWallet {
       if (typeof err === "object" && (err as any).error && typeof (err as any).error === "string") {
         throw new Error((err as any).error);
       }
+      if (typeof err === "object" && (err as any).error && typeof (err as any).error === "object") {
+        throw new Error((err as any).error.message || JSON.stringify(err));
+      }
       throw new Error(
         "Unknown error from Station extension: " + JSON.stringify(err)
       );

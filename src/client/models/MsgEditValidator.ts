@@ -14,7 +14,10 @@ export class MsgEditValidator implements Adapter {
   }
 
   public toProto() {
-    return new ProtoMsgEditValidator(this.data);
+    return new ProtoMsgEditValidator({
+      ...this.data,
+      commissionRate: this.data.commissionRate ? this.data.commissionRate : undefined,
+    });
   }
 
   public toAmino() {
@@ -22,7 +25,7 @@ export class MsgEditValidator implements Adapter {
       type: "staking/MsgEditValidator",
       value: {
         validator_address: this.data.validatorAddress,
-        commission_rate: this.data.commissionRate ? (Number(this.data.commissionRate) / (10**18)).toFixed(18) : undefined,
+        commission_rate: this.data.commissionRate ? this.data.commissionRate : undefined,
         min_self_delegation: this.data.minSelfDelegation ? this.data.minSelfDelegation.toString() : undefined,
         description: {
           moniker: this.data.description?.moniker ?? '[do-not-modify]',

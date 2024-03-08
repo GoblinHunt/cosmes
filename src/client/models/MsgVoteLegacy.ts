@@ -19,7 +19,7 @@ export class MsgVoteLegacy implements Adapter {
 
   public toAmino() {
     return {
-      type: "cosmos-sdk/MsgVote",
+      type: "gov/MsgVote",
       value: {
         proposal_id: this.data.proposalId,
         voter: this.data.voter,

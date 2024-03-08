@@ -56,5 +56,8 @@ export { MsgBeginRedelegate } from "./models/MsgBeginRedelegate";
 export { MsgWithdrawDelegatorRewards } from "./models/MsgWithdrawDelegatorRewards";
 export { MsgWithdrawValidatorCommission } from "./models/MsgWithdrawValidatorCommission";
 export { MsgEditValidator } from "./models/MsgEditValidator";
+export { MsgUnjail } from "./models/MsgUnjail";
 export { MsgVoteLegacy } from "./models/MsgVoteLegacy";
 export { MsgVote } from "./models/MsgVote";
+export { MsgExec } from "./models/MsgExec";
+export { MsgExecAuthorized } from "./models/MsgExecAuthorized";
