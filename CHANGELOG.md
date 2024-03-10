@@ -1,5 +1,33 @@
 # Changelog
 
+## `v0.0.59`
+
+### Fixes
+
+- Fix Station mobile wallet to not throw errors if pub keys do not exist
+
+## `v0.0.58`
+
+### Fixes
+
+- Fix Station mobile wallet connect issue when connecting more than 1 chain
+
+## `v0.0.57`
+
+### Fixes
+
+- Allow Terra testnet to work correctly with Station extension
+
+## `v0.0.56`
+
+### Features
+
+- Added Dymension's GAMM protobufs
+
+### Miscellaneous
+
+- Pinned Cosmos SDK protobuf to `v0.47.9`
+
 ## `v0.0.55`
 
 ### Features
