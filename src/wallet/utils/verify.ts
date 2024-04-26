@@ -1,10 +1,4 @@
-import {
-  base64,
-  utf8,
-  verifyADR36,
-  verifyECDSA,
-  verifyEIP191,
-} from "cosmes/codec";
+import { base64, utf8, verifyADR36, verifyEIP191 } from "cosmes/codec";
 
 import { WalletName } from "../constants/WalletName";
 
@@ -43,7 +37,6 @@ export function verifyArbitrary({
   type = "secp256k1",
 }: VerifyArbitraryParams): boolean {
   const params = {
-    wallet,
     pubKey: base64.decode(pubKey),
     bech32Prefix,
     data: utf8.decode(data),
@@ -52,16 +45,10 @@ export function verifyArbitrary({
   };
   try {
     switch (wallet) {
-      case WalletName.STATION:
-        return verifyECDSA(params);
-      case WalletName.COMPASS:
-      case WalletName.COSMOSTATION:
-      case WalletName.KEPLR:
-      case WalletName.LEAP:
-      case WalletName.NINJI:
-        return verifyADR36(params);
       case WalletName.METAMASK_INJECTIVE:
         return verifyEIP191(params);
+      default:
+        return verifyADR36(params);
     }
   } catch (err) {
     return false;
