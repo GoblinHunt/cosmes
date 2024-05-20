@@ -33,6 +33,7 @@ export { type Adapter } from "./models/Adapter";
 export { MsgStoreCode } from "./models/MsgStoreCode";
 export { MsgInstantiateContract } from "./models/MsgInstantiateContract";
 export { MsgExecuteContract } from "./models/MsgExecuteContract";
+export { MsgInstantiateContract } from "./models/MsgInstantiateContract";
 export { MsgExecuteContractInjective } from "./models/MsgExecuteContractInjective";
 export { MsgMigrateContract } from "./models/MsgMigrateContract";
 export { MsgIbcTransfer } from "./models/MsgIbcTransfer";
