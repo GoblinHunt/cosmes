@@ -64,4 +64,3 @@ export { MsgUnjail } from "./models/MsgUnjail";
 export { MsgVoteLegacy } from "./models/MsgVoteLegacy";
 export { MsgVote } from "./models/MsgVote";
 export { MsgExec } from "./models/MsgExec";
-export { MsgExecAuthorized } from "./models/MsgExecAuthorized";

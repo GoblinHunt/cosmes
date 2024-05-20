@@ -8,9 +8,11 @@ type Data = DeepPrettify<PlainMessage<ProtoMsgExec>>;
 
 export class MsgExec implements Adapter {
   private readonly data: Data;
+  private readonly isLegacy: boolean = false;
 
-  constructor(data: Data) {
+  constructor(data: Data, isLegacy: boolean = false) {
     this.data = data;
+    this.isLegacy = isLegacy;
   }
 
   public toProto() {
@@ -27,7 +29,7 @@ export class MsgExec implements Adapter {
 
   public toAmino() {
     return {
-      type: "msgauth/MsgExecAuthorized",
+      type: this.isLegacy ? "msgauth/MsgExecAuthorized" : "cosmos-sdk/MsgExec",
       value: {
         grantee: this.data.grantee,
         msgs: this.data.msgs.map((msg: any) => {
