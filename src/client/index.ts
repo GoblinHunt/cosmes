@@ -30,13 +30,11 @@ export {
 export { simulateTx, type SimulateTxParams } from "./apis/simulateTx";
 export { RpcClient } from "./clients/RpcClient";
 export { type Adapter } from "./models/Adapter";
-export { MsgStoreCode } from "./models/MsgStoreCode";
 export { MsgExecuteContract } from "./models/MsgExecuteContract";
 export { MsgInstantiateContract } from "./models/MsgInstantiateContract";
 export { MsgStoreCode } from "./models/MsgStoreCode";
 export { MsgMigrateContract } from "./models/MsgMigrateContract";
 export { MsgExecuteContractInjective } from "./models/MsgExecuteContractInjective";
-export { MsgMigrateContract } from "./models/MsgMigrateContract";
 export { MsgUpdateAdmin } from "./models/MsgUpdateAdmin";
 export { MsgClearAdmin } from "./models/MsgClearAdmin";
 export { MsgIbcTransfer } from "./models/MsgIbcTransfer";
