@@ -56,6 +56,12 @@ const Event = {
 } as const;
 type Event = (typeof Event)[keyof typeof Event];
 
+export interface SignOptions {
+  readonly preferNoSetFee?: boolean;
+  readonly preferNoSetMemo?: boolean;
+  readonly disableBalanceCheck?: boolean;
+}
+
 export class WalletConnectV2 {
   private readonly projectId: string;
   private readonly mobileAppDetails: MobileAppDetails;
@@ -63,6 +69,9 @@ export class WalletConnectV2 {
   private readonly onDisconnectCbs: Set<() => unknown>;
   private readonly onAccountChangeCbs: Set<() => unknown>;
   private signClient: SignClient | null;
+  defaultOptions: {
+    sign: { preferNoSetFee: boolean; preferNoSetMemo: boolean };
+  };
 
   constructor(projectId: string, mobileAppDetails: MobileAppDetails) {
     this.projectId = projectId;
@@ -71,6 +80,9 @@ export class WalletConnectV2 {
     this.onDisconnectCbs = new Set();
     this.onAccountChangeCbs = new Set();
     this.signClient = null;
+    this.defaultOptions = {
+      sign: { preferNoSetFee: true, preferNoSetMemo: true },
+    };
   }
 
   public async connect(chainIds: string[]): Promise<void> {
@@ -183,7 +195,8 @@ export class WalletConnectV2 {
   public async signAmino(
     chainId: string,
     signerAddress: string,
-    stdSignDoc: StdSignDoc
+    stdSignDoc: StdSignDoc,
+    signOptions: SignOptions,
   ): Promise<SignAminoResponse> {
     const { signature, signed } = await this.request<WcSignAminoResponse>(
       chainId,
@@ -191,6 +204,7 @@ export class WalletConnectV2 {
       {
         signerAddress,
         signDoc: stdSignDoc,
+        signOptions: signOptions,
       }
     );
     return {
@@ -202,7 +216,8 @@ export class WalletConnectV2 {
   public async signDirect(
     chainId: string,
     signerAddress: string,
-    signDoc: SignDoc
+    signDoc: SignDoc,
+    signOptions: SignOptions,
   ): Promise<SignDirectResponse> {
     const { signature, signed } = await this.request<WcSignDirectResponse>(
       chainId,
@@ -210,6 +225,7 @@ export class WalletConnectV2 {
       {
         signerAddress,
         signDoc,
+        signOptions:signOptions
       }
     );
     return {
