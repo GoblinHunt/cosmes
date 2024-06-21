@@ -9,14 +9,14 @@ import { ChainInfo, WalletController } from "../WalletController";
 import { WalletError } from "../WalletError";
 import { CosmostationExtension } from "./CosmostationExtension";
 import { CosmostationWalletConnectV2 } from "./CosmostationWalletConnectV2";
-import { WalletConnectV2Keplr } from "../../walletconnect/WalletConnectV2Keplr";
+import { WalletConnectV2 } from "cosmes/wallet/walletconnect/WalletConnectV2";
 
 export class CosmostationController extends WalletController {
-  private readonly wc: WalletConnectV2Keplr;
+  private readonly wc: WalletConnectV2;
 
   constructor(wcProjectId: string) {
     super(WalletName.COSMOSTATION);
-    this.wc = new WalletConnectV2Keplr(wcProjectId, {
+    this.wc = new WalletConnectV2(wcProjectId, {
       // https://github.com/cosmostation/cosmostation-wc-modal/blob/main/src/modal.tsx#L22-L34
       name: "Cosmostation",
       android:

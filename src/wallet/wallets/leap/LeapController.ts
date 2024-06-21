@@ -9,14 +9,14 @@ import { ChainInfo, WalletController } from "../WalletController";
 import { WalletError } from "../WalletError";
 import { LeapExtension } from "./LeapExtension";
 import { LeapWalletConnectV2 } from "./LeapWalletConnectV2";
-import { WalletConnectV2Keplr } from "../../walletconnect/WalletConnectV2Keplr";
+import { WalletConnectV2 } from "../../walletconnect/WalletConnectV2";
 
 export class LeapController extends WalletController {
-  private readonly wc: WalletConnectV2Keplr;
+  private readonly wc: WalletConnectV2;
 
   constructor(wcProjectId: string) {
     super(WalletName.LEAP);
-    this.wc = new WalletConnectV2Keplr(wcProjectId, {
+    this.wc = new WalletConnectV2(wcProjectId, {
       name: "Leap",
       android:
         "leapcosmos://wcV2#Intent;package=io.leapwallet.cosmos;scheme=leapwallet;end;",

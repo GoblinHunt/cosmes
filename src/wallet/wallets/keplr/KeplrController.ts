@@ -9,14 +9,14 @@ import { ChainInfo, WalletController } from "../WalletController";
 import { WalletError } from "../WalletError";
 import { KeplrExtension } from "./KeplrExtension";
 import { KeplrWalletConnectV2 } from "./KeplrWalletConnectV2";
-import { WalletConnectV2Keplr } from "cosmes/wallet/walletconnect/WalletConnectV2Keplr";
+import { WalletConnectV2 } from "cosmes/wallet/walletconnect/WalletConnectV2";
 
 export class KeplrController extends WalletController {
-  private readonly wc: WalletConnectV2Keplr;
+  private readonly wc: WalletConnectV2;
 
   constructor(wcProjectId: string) {
     super(WalletName.KEPLR);
-    this.wc = new WalletConnectV2Keplr(wcProjectId, {
+    this.wc = new WalletConnectV2(wcProjectId, {
       // https://github.com/chainapsis/keplr-wallet/blob/master/packages/wc-qrcode-modal/src/modal.tsx#L61-L75
       name: "Keplr",
       android:

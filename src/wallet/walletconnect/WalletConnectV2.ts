@@ -56,6 +56,11 @@ const Event = {
 } as const;
 type Event = (typeof Event)[keyof typeof Event];
 
+const DEFAULT_SIGN_OPTIONS = {
+  preferNoSetFee: true,
+  preferNoSetMemo: true,
+};
+
 export class WalletConnectV2 {
   private readonly projectId: string;
   private readonly mobileAppDetails: MobileAppDetails;
@@ -183,7 +188,7 @@ export class WalletConnectV2 {
   public async signAmino(
     chainId: string,
     signerAddress: string,
-    stdSignDoc: StdSignDoc,
+    stdSignDoc: StdSignDoc
   ): Promise<SignAminoResponse> {
     const { signature, signed } = await this.request<WcSignAminoResponse>(
       chainId,
@@ -191,6 +196,7 @@ export class WalletConnectV2 {
       {
         signerAddress,
         signDoc: stdSignDoc,
+        signOptions: DEFAULT_SIGN_OPTIONS,
       }
     );
     return {
@@ -202,7 +208,7 @@ export class WalletConnectV2 {
   public async signDirect(
     chainId: string,
     signerAddress: string,
-    signDoc: SignDoc,
+    signDoc: SignDoc
   ): Promise<SignDirectResponse> {
     const { signature, signed } = await this.request<WcSignDirectResponse>(
       chainId,
@@ -210,6 +216,7 @@ export class WalletConnectV2 {
       {
         signerAddress,
         signDoc,
+        signOptions: DEFAULT_SIGN_OPTIONS,
       }
     );
     return {
@@ -264,7 +271,7 @@ export class WalletConnectV2 {
     }
   }
 
-  protected async request<T>(chainId: string, method: Method, params: unknown) {
+  private async request<T>(chainId: string, method: Method, params: unknown) {
     const session = localStorage.getItem(this.sessionStorageKey);
     if (!session || !this.signClient) {
       throw new Error("Session not found for " + chainId);
