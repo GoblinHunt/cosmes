@@ -56,7 +56,6 @@ export { toBaseAccount } from "./utils/toBaseAccount";
 export { MsgGrantAuthorization } from "./models/MsgGrantAuthorization";
 export { MsgRevokeAuthorization } from "./models/MsgRevokeAuthorization";
 export { MsgDeposit } from "./models/MsgDeposit";
-export { MsgDepositLegacy } from "./models/MsgDepositLegacy";
 export { MsgDelegate } from "./models/MsgDelegate";
 export { MsgUndelegate } from "./models/MsgUndelegate";
 export { MsgBeginRedelegate } from "./models/MsgBeginRedelegate";
