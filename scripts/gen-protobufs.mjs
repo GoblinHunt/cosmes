@@ -27,6 +27,7 @@ import { fileURLToPath } from "url";
  * @type {object}
  * @property {string} repo - Git repo and branch to clone
  * @property {string[]} paths - Paths to proto files relative to the repo root
+ * @property {object} [options] - Degit options
  */
 
 /**
@@ -66,6 +67,17 @@ const REPOS = [
     repo: "dymensionxyz/osmosis#main-dym",
     paths: ["proto"],
   },
+  {
+    repo: "classic-terra/core#main",
+    paths: ["proto"],
+  },
+  {
+    repo: "git@github.com:vsc-blockchain/core#main",
+    paths: ["proto"],
+    options: {
+      mode: 'git',
+    }
+  },
 ];
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -85,7 +97,7 @@ console.log("Initialising directories...");
 console.log("Cloning required repos...");
 {
   await Promise.all(
-    REPOS.map(({ repo }) => degit(repo).clone(join(TMP_DIR, id(repo))))
+    REPOS.map(({ repo, options }) => degit(repo, options).clone(join(TMP_DIR, id(repo))))
   );
 }
 
