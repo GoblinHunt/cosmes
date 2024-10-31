@@ -1,4 +1,4 @@
-import { DymensionGammV1beta1QueryEstimateSwapExactAmountInService as SwapService } from "cosmes/protobufs";
+/*import { DymensionGammV1beta1QueryEstimateSwapExactAmountInService as SwapService } from "cosmes/protobufs";
 
 import { RpcClient } from "../clients/RpcClient";
 
@@ -7,12 +7,12 @@ export type SimulateDymensionSinglePoolSwapParams = {
   fromAsset: string;
   fromAmount: bigint;
   toAsset: string;
-};
+};*/
 
 /**
  * Simulates the amount of `toAsset` assets that would be received by swapping
  * `fromAmount` amount of `fromAsset` assets via the `poolId` pool.
- */
+ *//*
 export async function simulateDymensionSinglePoolSwap(
   endpoint: string,
   {
@@ -34,3 +34,4 @@ export async function simulateDymensionSinglePoolSwap(
   });
   return BigInt(tokenOutAmount);
 }
+*/
