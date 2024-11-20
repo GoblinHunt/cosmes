@@ -340,6 +340,13 @@ export {
   EpochInitialIssuance as TerraTreasuryV1beta1EpochInitialIssuance,
 } from "./terra/treasury/v1beta1/treasury_pb.js";
 export {
+  QueryContractInfoRequest as CosmwasmWasmV1QueryLegacyContractInfoRequest,
+  QueryContractInfoResponse as CosmwasmWasmV1QueryLegacyContractInfoResponse,
+} from "./terra/wasm/v1beta1/query_pb.js";
+export {
+  QueryContractInfoService as CosmwasmWasmV1QueryLegacyContractInfoService,
+} from "./terra/wasm/v1beta1/query_cosmes.js";
+export {
   QueryTaxRateRequest as TerraTreasuryV1beta1QueryTaxRateRequest,
   QueryTaxRateResponse as TerraTreasuryV1beta1QueryTaxRateResponse,
   QueryTaxCapRequest as TerraTreasuryV1beta1QueryTaxCapRequest,

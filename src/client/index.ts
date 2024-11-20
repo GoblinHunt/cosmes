@@ -61,6 +61,7 @@ export { MsgUndelegate } from "./models/MsgUndelegate";
 export { MsgBeginRedelegate } from "./models/MsgBeginRedelegate";
 export { MsgWithdrawDelegatorRewards } from "./models/MsgWithdrawDelegatorRewards";
 export { MsgWithdrawValidatorCommission } from "./models/MsgWithdrawValidatorCommission";
+export { MsgCreateValidator } from "./models/MsgCreateValidator";
 export { MsgEditValidator } from "./models/MsgEditValidator";
 export { MsgUnjail } from "./models/MsgUnjail";
 export { MsgVoteLegacy } from "./models/MsgVoteLegacy";
