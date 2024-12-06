@@ -24,3 +24,4 @@ export { NinjiController } from "./wallets/ninji/NinjiController";
 export { OWalletController } from "./wallets/owallet/OWalletController";
 export { StationController } from "./wallets/station/StationController";
 export { GalaxyStationController } from "./wallets/galaxystation/GalaxyStationController";
+export { LUNCDashController } from "./wallets/luncdash/LUNCDashController";

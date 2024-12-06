@@ -8,6 +8,7 @@ export type MobileAppDetails = {
   android: string;
   ios: string;
   isStation?: boolean | undefined;
+  isLuncDash?: boolean | undefined;
 };
 
 export class QRCodeModal implements IQRCodeModal {
@@ -49,7 +50,9 @@ export class QRCodeModal implements IQRCodeModal {
     ].join(";");
 
     const schemeUri = this.details.isStation
-      ? `https://terrastation.page.link/?link=https://terra.money?${encodeURIComponent(
+      ? this.details.isLuncDash
+      ? `luncdash://wallet_connect?${encodeURIComponent(`payload=${encodeURIComponent(uri)}`)}`
+      : `https://terrastation.page.link/?link=https://terra.money?${encodeURIComponent(
           `action=wallet_connect&payload=${encodeURIComponent(uri)}`
         )}&apn=money.terra.station&ibi=money.terra.station&isi=1548434735`
       : uri;
