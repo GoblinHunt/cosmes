@@ -13,9 +13,11 @@ type Data<T> = Prettify<
 
 export class MsgExecuteContract<T> implements Adapter {
   private readonly data: Data<T>;
+  private readonly legacy: boolean;
 
-  constructor(data: Data<T>) {
+  constructor(data: Data<T>, legacy = false) {
     this.data = data;
+    this.legacy = legacy;
   }
 
   public toProto() {
@@ -28,7 +30,14 @@ export class MsgExecuteContract<T> implements Adapter {
   public toAmino() {
     return {
       type: "wasm/MsgExecuteContract",
-      value: this.data,
+      value: {
+        ...this.data,
+        ...this.legacy ? {
+          execute_msg: utf8.decode(JSON.stringify(this.data.msg)),
+        } : {
+          msg: utf8.decode(JSON.stringify(this.data.msg)),
+        },
+      },
     };
   }
 }
