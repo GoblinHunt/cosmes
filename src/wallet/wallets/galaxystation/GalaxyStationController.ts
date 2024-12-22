@@ -12,10 +12,12 @@ import { GalaxyStationExtension } from "./GalaxyStationExtension";
 import { StationWalletConnectV1 } from "../station/StationWalletConnectV1";
 
 const TERRA_CLASSIC_MAINNET_CHAIN_ID = "columbus-5";
+const TERRA_CLASSIC_TESTNET_CHAIN_ID = "rebel-2";
 const TERRA_MAINNET_CHAIN_ID = "phoenix-1";
 const TERRA_TESTNET_CHAIN_ID = "pisco-1";
 const COIN_TYPE_330_CHAINS = [
   TERRA_CLASSIC_MAINNET_CHAIN_ID,
+  TERRA_CLASSIC_TESTNET_CHAIN_ID,
   TERRA_MAINNET_CHAIN_ID,
   TERRA_TESTNET_CHAIN_ID,
 ];
