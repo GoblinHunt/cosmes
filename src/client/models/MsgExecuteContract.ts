@@ -1,5 +1,5 @@
 import { PlainMessage } from "@bufbuild/protobuf";
-import { utf8 } from "cosmes/codec";
+import { base64, utf8 } from "cosmes/codec";
 import { CosmwasmWasmV1MsgExecuteContract as ProtoMsgExecuteContract } from "cosmes/protobufs";
 
 import { DeepPrettify, Prettify } from "../../typeutils/prettify";
@@ -33,9 +33,9 @@ export class MsgExecuteContract<T> implements Adapter {
       value: {
         ...this.data,
         ...this.legacy ? {
-          execute_msg: utf8.decode(JSON.stringify(this.data.msg)),
+          execute_msg: this.data.msg,
         } : {
-          msg: utf8.decode(JSON.stringify(this.data.msg)),
+          msg: this.data.msg,
         },
       },
     };
