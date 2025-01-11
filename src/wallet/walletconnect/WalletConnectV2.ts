@@ -210,18 +210,19 @@ export class WalletConnectV2 {
       const timeout = new Promise<GetAccountResponse>((_, reject) =>
         setTimeout(() => reject(new Error("Request timed out")), 3000)
       );
-      
+
       const resArray = await Promise.race([this.request<GetAccountResponse[]>(chainId, Method.GET_ACCOUNTS, {}), timeout]);
       const res = Array.isArray(resArray) ? resArray[0] : resArray;
 
       // Store successful response
-      console.log("Got account and store for later", res);
+      this.onDisconnect(() => {
+        localStorage.removeItem(this.accountStorageKey);
+      });
       localStorage.setItem(this.accountStorageKey, JSON.stringify(res));
       return res;
     } catch (e) {
       // Try to get stored account data
       const stored = localStorage.getItem(this.accountStorageKey);
-      console.log("Failed to get account, trying stored", stored, "error", e, "from", this.accountStorageKey);
       if (stored) {
         const account = JSON.parse(stored) as GetAccountResponse;
         // Try to refresh in background
@@ -229,7 +230,10 @@ export class WalletConnectV2 {
           .then(([res]) => {
             localStorage.setItem(this.accountStorageKey, JSON.stringify(res));
           })
-          .catch(() => {/* ignore */});
+          .catch(() => {/* ignore */ });
+        this.onDisconnect(() => {
+          localStorage.removeItem(this.accountStorageKey);
+        });
         return account;
       }
       throw e;

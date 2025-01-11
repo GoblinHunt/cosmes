@@ -68,6 +68,14 @@ export class KeplrController extends WalletController {
     return { wallets, wc: this.wc };
   }
 
+  public disconnect(chainIds: string[]): void {
+    super.disconnect(chainIds);
+
+    if (this.connectedWallets.size === 0) {
+      this.wc.disconnect();
+    }
+  }
+
   protected async connectExtension<T extends string>(chains: ChainInfo<T>[]) {
     const wallets = new Map<T, ConnectedWallet>();
     const ext = window.keplr;
