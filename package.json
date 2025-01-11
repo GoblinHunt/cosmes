@@ -1,6 +1,6 @@
 {
   "name": "@goblinhunt/cosmes",
-  "version": "0.0.71-ghunt.5",
+  "version": "0.0.71-ghunt.6",
   "private": false,
   "packageManager": "pnpm@8.3.0",
   "sideEffects": false,
