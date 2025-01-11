@@ -44,6 +44,10 @@ type WcSignDirectResponse = {
 };
 type SignDirectResponse = Required<WcSignDirectResponse>;
 
+export type WalletConnectV2Config = {
+  disableConnectionCheck?: boolean;
+};
+
 const Method = {
   GET_ACCOUNTS: "cosmos_getAccounts",
   SIGN_AMINO: "cosmos_signAmino",
@@ -66,17 +70,21 @@ export class WalletConnectV2 {
   private readonly projectId: string;
   private readonly mobileAppDetails: MobileAppDetails;
   private readonly sessionStorageKey: string;
+  private readonly accountStorageKey: string;
   private readonly onDisconnectCbs: Set<() => unknown>;
   private readonly onAccountChangeCbs: Set<() => unknown>;
   private signClient: SignClient | null;
+  private config?: WalletConnectV2Config;
 
-  constructor(projectId: string, mobileAppDetails: MobileAppDetails) {
+  constructor(projectId: string, mobileAppDetails: MobileAppDetails, config?: WalletConnectV2Config) {
     this.projectId = projectId;
     this.mobileAppDetails = mobileAppDetails;
     this.sessionStorageKey = `cosmes.wallet.${mobileAppDetails.name.toLowerCase()}.wcSession`;
+    this.accountStorageKey = `cosmes.wallet.${mobileAppDetails.name.toLowerCase()}.lastAccount`;
     this.onDisconnectCbs = new Set();
     this.onAccountChangeCbs = new Set();
     this.signClient = null;
+    this.config = config
   }
 
   public async connect(chainIds: string[]): Promise<void> {
@@ -87,10 +95,10 @@ export class WalletConnectV2 {
       });
       // Disconnect if the session is disconnected or expired
       this.signClient.on("session_delete", ({ topic }) =>
-        this.disconnect(topic)
+        this._disconnect(topic)
       );
       this.signClient.on("session_expire", ({ topic }) =>
-        this.disconnect(topic)
+        this._disconnect(topic)
       );
       // Handle the `accountsChanged` event
       const handleAccountChange = debounce(
@@ -116,6 +124,9 @@ export class WalletConnectV2 {
       ) as StorageSession;
       const storedIdsSet = new Set(storedIds);
       if (chainIds.every((id) => storedIdsSet.has(id))) {
+        if (this.config?.disableConnectionCheck) {
+          return;
+        }
         // If the requested chain IDs are a subset of the stored chain IDs, we can
         // proceed to check if the session is still working and connected
         if (await this.isConnected(this.signClient, topic, 4)) {
@@ -123,7 +134,7 @@ export class WalletConnectV2 {
           return;
         } else {
           // Otherwise, assume the session is stale and disconnect
-          this.disconnect(topic);
+          this._disconnect(topic);
         }
       } else {
         // Otherwise, we need to merge the stored IDs with the requested IDs
@@ -167,6 +178,14 @@ export class WalletConnectV2 {
     }
   }
 
+  public disconnect() {
+    const session = localStorage.getItem(this.sessionStorageKey);
+    if (session) {
+      const { topic } = JSON.parse(session) as StorageSession;
+      this._disconnect(topic);
+    }
+  }
+
   public onDisconnect(cb: () => unknown): () => void {
     this.onDisconnectCbs.add(cb);
     return () => this.onDisconnectCbs.delete(cb);
@@ -178,12 +197,43 @@ export class WalletConnectV2 {
   }
 
   public async getAccount(chainId: string): Promise<GetAccountResponse> {
-    const [res] = await this.request<GetAccountResponse[]>(
-      chainId,
-      Method.GET_ACCOUNTS,
-      {}
-    );
-    return res;
+    if (!this.config?.disableConnectionCheck) {
+      const [res] = await this.request<GetAccountResponse[]>(
+        chainId,
+        Method.GET_ACCOUNTS,
+        {}
+      );
+      return res;
+    }
+
+    try {
+      const timeout = new Promise<GetAccountResponse>((_, reject) =>
+        setTimeout(() => reject(new Error("Request timed out")), 3000)
+      );
+      
+      const resArray = await Promise.race([this.request<GetAccountResponse[]>(chainId, Method.GET_ACCOUNTS, {}), timeout]);
+      const res = Array.isArray(resArray) ? resArray[0] : resArray;
+
+      // Store successful response
+      console.log("Got account and store for later", res);
+      localStorage.setItem(this.accountStorageKey, JSON.stringify(res));
+      return res;
+    } catch (e) {
+      // Try to get stored account data
+      const stored = localStorage.getItem(this.accountStorageKey);
+      console.log("Failed to get account, trying stored", stored, "error", e, "from", this.accountStorageKey);
+      if (stored) {
+        const account = JSON.parse(stored) as GetAccountResponse;
+        // Try to refresh in background
+        this.request<GetAccountResponse[]>(chainId, Method.GET_ACCOUNTS, {})
+          .then(([res]) => {
+            localStorage.setItem(this.accountStorageKey, JSON.stringify(res));
+          })
+          .catch(() => {/* ignore */});
+        return account;
+      }
+      throw e;
+    }
   }
 
   public async signAmino(
@@ -263,7 +313,7 @@ export class WalletConnectV2 {
     return Promise.race([tryPing(), waitDisconnect(), timeout()]);
   }
 
-  private disconnect(topic: string) {
+  private _disconnect(topic: string) {
     const session = localStorage.getItem(this.sessionStorageKey);
     if (!session || session.includes(topic)) {
       // Ignore stale disconnects; clean up only if the topic matches

@@ -9,12 +9,12 @@ import { ChainInfo, WalletController } from "../WalletController";
 import { WalletError } from "../WalletError";
 import { KeplrExtension } from "./KeplrExtension";
 import { KeplrWalletConnectV2 } from "./KeplrWalletConnectV2";
-import { WalletConnectV2 } from "cosmes/wallet/walletconnect/WalletConnectV2";
+import { WalletConnectV2, WalletConnectV2Config } from "cosmes/wallet/walletconnect/WalletConnectV2";
 
 export class KeplrController extends WalletController {
   private readonly wc: WalletConnectV2;
 
-  constructor(wcProjectId: string) {
+  constructor(wcProjectId: string, wcConfig?: WalletConnectV2Config) {
     super(WalletName.KEPLR);
     this.wc = new WalletConnectV2(wcProjectId, {
       // https://github.com/chainapsis/keplr-wallet/blob/master/packages/wc-qrcode-modal/src/modal.tsx#L61-L75
@@ -22,7 +22,7 @@ export class KeplrController extends WalletController {
       android:
         "intent://wcV2#Intent;package=com.chainapsis.keplr;scheme=keplrwallet;end;",
       ios: "keplrwallet://wcV2",
-    });
+    }, wcConfig);
     this.registerAccountChangeHandlers();
   }
 
@@ -39,27 +39,31 @@ export class KeplrController extends WalletController {
     );
     for (let i = 0; i < chains.length; i++) {
       const { chainId, rpc, gasPrice } = chains[i];
-      const { name, pubkey, address } = await WalletError.wrap(
-        this.wc.getAccount(chainId)
-      );
-      const key = new Secp256k1PubKey({
-        key: base64.decode(pubkey),
-        chainId,
-      });
-      wallets.set(
-        chainId,
-        new KeplrWalletConnectV2(
-          this.id,
-          name,
-          this.wc,
+      try {
+        const { name, pubkey, address } = await WalletError.wrap(
+          this.wc.getAccount(chainId)
+        );
+        const key = new Secp256k1PubKey({
+          key: base64.decode(pubkey),
           chainId,
-          key,
-          address,
-          rpc,
-          gasPrice,
-          true // TODO: use sign mode direct when supported
-        )
-      );
+        });
+        wallets.set(
+          chainId,
+          new KeplrWalletConnectV2(
+            this.id,
+            name,
+            this.wc,
+            chainId,
+            key,
+            address,
+            rpc,
+            gasPrice,
+            true // TODO: use sign mode direct when supported
+          )
+        );
+      } catch (error) {
+        this.wc.disconnect()
+      }
     }
     return { wallets, wc: this.wc };
   }
