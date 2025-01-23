@@ -1,110 +1,88 @@
 import { Secp256k1PubKey, getAccount, toBaseAccount } from "cosmes/client";
 import { CosmosCryptoSecp256k1PubKey } from "cosmes/protobufs";
+import { base64 } from "cosmes/codec";
 
 import { WalletName } from "../../constants/WalletName";
 import { WalletType } from "../../constants/WalletType";
 import { onWindowEvent } from "../../utils/window";
-import { WalletConnectV1 } from "../../walletconnect/WalletConnectV1";
+import { WalletConnectV2 } from "../../walletconnect/WalletConnectV2";
 import { ConnectedWallet } from "../ConnectedWallet";
 import { ChainInfo, WalletController } from "../WalletController";
 import { WalletError } from "../WalletError";
 import { GalaxyStationExtension } from "./GalaxyStationExtension";
-import { StationWalletConnectV1 } from "../station/StationWalletConnectV1";
+import { GalaxyStationWalletConnectV2 } from "./GalaxyStationWalletConnectV2";
 
-const TERRA_CLASSIC_MAINNET_CHAIN_ID = "columbus-5";
-const TERRA_CLASSIC_TESTNET_CHAIN_ID = "rebel-2";
-const TERRA_MAINNET_CHAIN_ID = "phoenix-1";
-const TERRA_TESTNET_CHAIN_ID = "pisco-1";
 const COIN_TYPE_330_CHAINS = [
-  TERRA_CLASSIC_MAINNET_CHAIN_ID,
-  TERRA_CLASSIC_TESTNET_CHAIN_ID,
-  TERRA_MAINNET_CHAIN_ID,
-  TERRA_TESTNET_CHAIN_ID,
+  "columbus-5",
+  "phoenix-1",
+  "octagon-1",
+  "pisco-1",
 ];
 
 export class GalaxyStationController extends WalletController {
-  private readonly wc: WalletConnectV1;
+  private readonly wc: WalletConnectV2;
 
-  constructor() {
+  constructor(wcProjectId: string) {
     super(WalletName.GALAXYSTATION);
-    this.wc = new WalletConnectV1(
-      "cosmes.wallet.station.wcSession",
-      {
-        name: "GalaxyStation",
-        android: "",
-        ios: "",
-        isStation: true,
-      },
-      {
-        bridge: "https://walletconnect.terra.dev",
-        signingMethods: [],
-      }
-    );
+    this.wc = new WalletConnectV2(wcProjectId, {
+      name: "Galaxy Station",
+      android: "https://station.hexxagon.io/wcV2#Intent;package=io.hexxagon.station;scheme=galaxystation;end;",
+      ios: "https://station.hexxagon.io/wcV2",
+    });
     this.registerAccountChangeHandlers();
   }
 
   public async isInstalled(type: WalletType) {
-    return type === WalletType.EXTENSION ? "station" in window : true;
+    return type === WalletType.EXTENSION ? "galaxyStation" in window : true;
   }
 
   protected async connectWalletConnect<T extends string>(
     chains: ChainInfo<T>[]
   ) {
-    for (const { chainId } of chains) {
-      // Station mobile's WallectConnect only supports these chains
-      // TODO: update when Station mobile supports more chains
-      if (COIN_TYPE_330_CHAINS.includes(chainId)) {
-        continue;
-      }
-      throw new Error(`${chainId} not supported`);
-    }
     const wallets = new Map<T, ConnectedWallet>();
-    const wc = await WalletError.wrap(this.wc.connect());
-    // Station mobile only returns 1 address for now
-    // TODO: update when Station mobile supports more chains
-    const address = wc.accounts[0];
+    await WalletError.wrap(
+      this.wc.connect(chains.map(({ chainId }) => chainId))
+    );
     for (let i = 0; i < chains.length; i++) {
       const { chainId, rpc, gasPrice } = chains[i];
-      try {
-        // Since Station's WalletConnect doesn't support getting pub keys, we
-        // need to query the account to get it. However, if the wallet does
-        // not contain funds, the RPC will throw errors.
-        const key = await WalletError.wrap(
-          this.getPubKey(chainId, rpc, address)
-        );
-        wallets.set(
+      const { name, pubkey, address } = await WalletError.wrap(
+        this.wc.getAccount(chainId)
+      );
+      const key = new Secp256k1PubKey({
+        chainId,
+        key: base64.decode(pubkey),
+      });
+      wallets.set(
+        chainId,
+        new GalaxyStationWalletConnectV2(
+          this.id,
+          name,
+          this.wc,
           chainId,
-          new StationWalletConnectV1(
-            undefined,
-            wc,
-            chainId,
-            key,
-            address,
-            rpc,
-            gasPrice
-          )
-        );
-      } catch (err) {
-        // We simply log and ignore the error for now
-        console.warn(err);
-      }
+          key,
+          address,
+          rpc,
+          gasPrice,
+          true // TODO: use sign mode direct when supported
+        )
+      );
     }
-    this.wc.cacheSession(wc);
     return { wallets, wc: this.wc };
   }
 
   protected async connectExtension<T extends string>(chains: ChainInfo<T>[]) {
     const wallets = new Map<T, ConnectedWallet>();
-    const ext = window.station?.keplr;
+    const ext = window.galaxyStation?.keplr;
     if (!ext) {
-      throw new Error("Station extension is not installed");
+      throw new Error("Galaxy Station extension is not installed");
     }
-    // This method never throws on Station
+    // This method never throws on Galaxy Station
     await WalletError.wrap(ext.enable(chains.map(({ chainId }) => chainId)));
     for (const { chainId, rpc, gasPrice } of Object.values(chains)) {
       try {
-        const { name, bech32Address, pubKey, isNanoLedger } =
-          await WalletError.wrap(ext.getKey(chainId));
+        const { name, bech32Address, pubKey, isNanoLedger } = await WalletError.wrap(
+          ext.getKey(chainId)
+        );
         const key = new Secp256k1PubKey({
           key: pubKey,
           chainId,
@@ -136,13 +114,13 @@ export class GalaxyStationController extends WalletController {
   }
 
   protected registerAccountChangeHandlers() {
-    onWindowEvent("station_wallet_change", () =>
+    onWindowEvent("galaxy_station_wallet_change", () =>
       this.changeAccount(WalletType.EXTENSION)
     );
-    onWindowEvent("station_network_change", () =>
+    onWindowEvent("galaxy_station_network_change", () =>
       this.changeAccount(WalletType.EXTENSION)
     );
-    // Station's WalletConnect v1 doesn't support account change events
+    this.wc.onAccountChange(() => this.changeAccount(WalletType.WALLETCONNECT));
   }
 
   private async getPubKey(
