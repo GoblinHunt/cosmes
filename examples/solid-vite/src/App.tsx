@@ -54,7 +54,7 @@ const TYPES: Record<WalletType, string> = {
 };
 const CONTROLLERS: Record<string, WalletController> = {
   [WalletName.STATION]: new StationController(),
-  [WalletName.GALAXYSTATION]: new GalaxyStationController(),
+  [WalletName.GALAXYSTATION]: new GalaxyStationController(WC_PROJECT_ID),
   [WalletName.KEPLR]: new KeplrController(WC_PROJECT_ID),
   [WalletName.LEAP]: new LeapController(WC_PROJECT_ID),
   [WalletName.COMPASS]: new CompassController(),
