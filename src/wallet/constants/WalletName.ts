@@ -12,5 +12,6 @@ export const WalletName = {
   NINJI: "ninji",
   OWALLET: "owallet",
   GALAXYSTATION: "galaxystation",
+  DAODAO: "daodao",
 } as const;
 export type WalletName = (typeof WalletName)[keyof typeof WalletName];
