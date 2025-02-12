@@ -4,6 +4,7 @@ import { CosmwasmWasmV1MsgExecuteContract as ProtoMsgExecuteContract } from "cos
 
 import { DeepPrettify, Prettify } from "../../typeutils/prettify";
 import { Adapter } from "./Adapter";
+import { removeNull } from "../utils/null";
 
 type Data<T> = Prettify<
   DeepPrettify<Omit<PlainMessage<ProtoMsgExecuteContract>, "msg">> & {
@@ -28,15 +29,17 @@ export class MsgExecuteContract<T> implements Adapter {
   }
 
   public toAmino() {
+    const { sender, contract, funds, msg } = this.data;
     return {
       type: "wasm/MsgExecuteContract",
       value: {
-        ...this.data,
-        ...this.legacy ? {
-          execute_msg: this.data.msg,
-        } : {
-          msg: this.data.msg,
-        },
+        sender,
+        contract,
+        msg: removeNull(msg),
+        funds: funds ? funds.map((fund) => ({
+          denom: fund.denom,
+          amount: fund.amount.toString(),
+        })) : [],
       },
     };
   }
