@@ -208,10 +208,7 @@ export abstract class ConnectedWallet {
     return this.pollTx(txHash, pollOpts);
   }
 
-  public async addChain(chainInfo: AddChainInfo): Promise<void> {
-    // ! Not implemented by all wallets
-    throw new Error("Method not implemented.");
-  }
+  public abstract addChain(chainInfo: AddChainInfo): Promise<void>;
 
   /**
    * Signs the UTF-8 encoded `data` string. Note that some mobile wallets do not
