@@ -94,6 +94,7 @@ export class DaoDaoController extends WalletController {
   }
 
   protected registerAccountChangeHandlers() {
-
+    // empty
+    return;
   }
 }
