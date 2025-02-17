@@ -12,13 +12,6 @@ import { WalletError } from "../WalletError";
 import { GalaxyStationExtension } from "./GalaxyStationExtension";
 import { GalaxyStationWalletConnectV2 } from "./GalaxyStationWalletConnectV2";
 
-const COIN_TYPE_330_CHAINS = [
-  "columbus-5",
-  "phoenix-1",
-  "octagon-1",
-  "pisco-1",
-];
-
 export class GalaxyStationController extends WalletController {
   private readonly wc: WalletConnectV2;
 

@@ -45,7 +45,7 @@ export class StationWalletConnectV1 extends ConnectedWallet {
     this.wc = wc;
   }
 
-  public async addChain(chainInfo: AddChainInfo): Promise<void> {
+  public async addChain(_chainInfo: AddChainInfo): Promise<void> {
     throw new WalletError("Station does not support adding chains", null);
   }
 

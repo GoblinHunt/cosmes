@@ -1,5 +1,5 @@
 import { PlainMessage } from "@bufbuild/protobuf";
-import { base64, utf8 } from "cosmes/codec";
+import { utf8 } from "cosmes/codec";
 import { CosmwasmWasmV1MsgExecuteContract as ProtoMsgExecuteContract } from "cosmes/protobufs";
 
 import { DeepPrettify, Prettify } from "../../typeutils/prettify";

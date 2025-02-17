@@ -34,7 +34,7 @@ export class DaoDaoController extends WalletController {
   }
 
   protected async connectWalletConnect<T extends string>(
-    chains: ChainInfo<T>[]
+    _chains: ChainInfo<T>[]
   ): Promise<{
       wallets: Map<T, ConnectedWallet>;
       wc: WalletConnectV1 | WalletConnectV2;
@@ -86,7 +86,6 @@ export class DaoDaoController extends WalletController {
           )
         );
       } catch (error: any) {
-        console.error(error);
         throw new WalletError(error.message, error);
       }
     }

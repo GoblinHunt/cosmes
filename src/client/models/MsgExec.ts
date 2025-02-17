@@ -33,7 +33,6 @@ export class MsgExec implements Adapter {
       value: {
         grantee: this.data.grantee,
         msgs: this.data.msgs.map((msg: any) => {
-          //return msg.toAmino();
           return {
             '@type': `/${msg.toProto().getType().typeName}`,
             ...msg.toAmino().value

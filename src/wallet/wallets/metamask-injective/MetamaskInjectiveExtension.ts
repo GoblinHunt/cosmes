@@ -49,7 +49,7 @@ export class MetamaskInjectiveExtension extends ConnectedWallet {
     this.ethAddress = ethAddress;
   }
 
-  public async addChain(chainInfo: AddChainInfo): Promise<void> {
+  public async addChain(_chainInfo: AddChainInfo): Promise<void> {
     throw new WalletError("MetaMask does not support adding chains", null);
   }
 

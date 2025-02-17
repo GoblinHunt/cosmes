@@ -119,7 +119,7 @@ export class MnemonicWallet extends ConnectedWallet {
     this.keyType = keyType;
   }
 
-  public async addChain(chainInfo: AddChainInfo): Promise<void> {
+  public async addChain(_chainInfo: AddChainInfo): Promise<void> {
     throw new Error("Mnemonic wallet does not support adding chains");
   }
 

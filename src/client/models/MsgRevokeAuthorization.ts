@@ -6,7 +6,7 @@ import { Adapter } from "./Adapter";
 
 type Data = DeepPrettify<PlainMessage<ProtoMsgRevoke>>;
 
-export class MsgRevokeAuthorization<T> implements Adapter {
+export class MsgRevokeAuthorization implements Adapter {
   private readonly data: Data;
 
   constructor(data: Data) {

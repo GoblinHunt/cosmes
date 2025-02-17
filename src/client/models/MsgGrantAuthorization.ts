@@ -1,8 +1,7 @@
 import { PlainMessage } from "@bufbuild/protobuf";
-import { utf8 } from "cosmes/codec";
 import { CosmosAuthzV1beta1MsgGrant as ProtoMsgGrant, CosmosStakingV1beta1StakeAuthorization as ProtoStakeAuthorization, CosmosBankV1beta1SendAuthorization as ProtoSendAuthorization, CosmosAuthzV1beta1GenericAuthorization as ProtoGenericAuthorization } from "cosmes/protobufs"; // Adjust the import path as necessary
 
-import { DeepPrettify, Prettify } from "../../typeutils/prettify"; // Adjust the import path as necessary
+import { DeepPrettify } from "../../typeutils/prettify"; // Adjust the import path as necessary
 import { Adapter } from "./Adapter"; // Adjust the import path as necessary
 
 // Adjust the type definition to match the structure of MsgGrant

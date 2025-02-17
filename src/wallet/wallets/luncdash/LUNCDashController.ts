@@ -92,7 +92,7 @@ export class LUNCDashController extends WalletController {
     return { wallets, wc: this.wc };
   }
 
-  protected async connectExtension<T extends string>(chains: ChainInfo<T>[]) {
+  protected async connectExtension<T extends string>(_chains: ChainInfo<T>[]) {
     throw new Error("Extension is not installed");
 
     return new Map<T, ConnectedWallet>();

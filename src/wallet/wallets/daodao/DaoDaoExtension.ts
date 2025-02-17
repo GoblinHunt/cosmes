@@ -47,11 +47,11 @@ export class DaoDaoExtension extends ConnectedWallet {
     this.ext = ext;
   }
 
-  public async signArbitrary(data: string): Promise<SignArbitraryResponse> {
+  public async signArbitrary(_data: string): Promise<SignArbitraryResponse> {
     throw new WalletError("DAO DAO does not support arbitrary signing", null);
   }
 
-  public async addChain(chainInfo: AddChainInfo): Promise<void> {
+  public async addChain(_chainInfo: AddChainInfo): Promise<void> {
     throw new WalletError("DAO DAO does not support adding chains", null);
   }
 

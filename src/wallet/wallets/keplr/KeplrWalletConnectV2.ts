@@ -1,5 +1,5 @@
 import { PlainMessage } from "@bufbuild/protobuf";
-import { base64, utf8 } from "@scure/base";
+import { base64 } from "@scure/base";
 import {
   RpcClient,
   Secp256k1PubKey,

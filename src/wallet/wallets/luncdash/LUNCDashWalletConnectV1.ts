@@ -45,7 +45,7 @@ export class LUNCDashWalletConnectV1 extends ConnectedWallet {
     this.wc = wc;
   }
 
-  public async addChain(chainInfo: AddChainInfo): Promise<void> {
+  public async addChain(_chainInfo: AddChainInfo): Promise<void> {
     throw new WalletError("LUNCDash does not support adding chains", null);
   }
 
