@@ -18,6 +18,7 @@ import {
 import { WalletError } from "../WalletError";
 import { PostResponse, SignBytesResponse } from "./types";
 import { toStationTx } from "./utils/toStationTx";
+import { AddChainInfo } from "../../walletconnect/WalletConnectV2";
 
 export class StationWalletConnectV1 extends ConnectedWallet {
   private readonly wc: WalletConnect;
@@ -42,6 +43,10 @@ export class StationWalletConnectV1 extends ConnectedWallet {
       gasPrice
     );
     this.wc = wc;
+  }
+
+  public async addChain(chainInfo: AddChainInfo): Promise<void> {
+    throw new WalletError("Station does not support adding chains", null);
   }
 
   public async signArbitrary(data: string): Promise<SignArbitraryResponse> {

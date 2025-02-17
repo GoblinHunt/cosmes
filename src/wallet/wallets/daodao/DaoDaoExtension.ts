@@ -19,6 +19,7 @@ import {
 } from "../ConnectedWallet";
 import { WalletError } from "../WalletError";
 import { Cosmiframe } from "@dao-dao/cosmiframe";
+import { AddChainInfo } from "../../walletconnect/WalletConnectV2";
 
 export class DaoDaoExtension extends ConnectedWallet {
   private readonly ext: Cosmiframe;
@@ -48,6 +49,10 @@ export class DaoDaoExtension extends ConnectedWallet {
 
   public async signArbitrary(data: string): Promise<SignArbitraryResponse> {
     throw new WalletError("DAO DAO does not support arbitrary signing", null);
+  }
+
+  public async addChain(chainInfo: AddChainInfo): Promise<void> {
+    throw new WalletError("DAO DAO does not support adding chains", null);
   }
 
   protected async signAndBroadcastTx(

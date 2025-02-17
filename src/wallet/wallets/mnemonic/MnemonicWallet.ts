@@ -19,6 +19,7 @@ import {
   UnsignedTx,
 } from "../ConnectedWallet";
 import { ChainInfo } from "../WalletController";
+import { AddChainInfo } from "../../walletconnect/WalletConnectV2";
 
 export type ConnectMnemonicWalletOptions = Prettify<
   {
@@ -116,6 +117,10 @@ export class MnemonicWallet extends ConnectedWallet {
     this.publicKey = base64.encode(publicKey);
     this.privateKey = privateKey;
     this.keyType = keyType;
+  }
+
+  public async addChain(chainInfo: AddChainInfo): Promise<void> {
+    throw new Error("Mnemonic wallet does not support adding chains");
   }
 
   public async signArbitrary(data: string): Promise<SignArbitraryResponse> {

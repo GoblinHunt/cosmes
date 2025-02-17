@@ -18,6 +18,7 @@ import {
 } from "../ConnectedWallet";
 import { WalletError } from "../WalletError";
 import { Ethereum } from "./types";
+import { AddChainInfo } from "../../walletconnect/WalletConnectV2";
 
 export class MetamaskInjectiveExtension extends ConnectedWallet {
   private readonly ext: Ethereum;
@@ -46,6 +47,10 @@ export class MetamaskInjectiveExtension extends ConnectedWallet {
     );
     this.ext = ext;
     this.ethAddress = ethAddress;
+  }
+
+  public async addChain(chainInfo: AddChainInfo): Promise<void> {
+    throw new WalletError("MetaMask does not support adding chains", null);
   }
 
   public async signArbitrary(data: string): Promise<SignArbitraryResponse> {
