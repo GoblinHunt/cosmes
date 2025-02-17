@@ -68,7 +68,7 @@ export type AddChainInfo = {
   chainName: string;
   rpc: string;
   rest: string;
-  stakeCurrency?: {
+  stakeCurrency: {
     coinDenom: string;
     coinMinimalDenom: string;
     coinDecimals: number;
@@ -77,7 +77,7 @@ export type AddChainInfo = {
   bip44: {
     coinType: number;
   };
-  bech32Config?: {
+  bech32Config: {
     bech32PrefixAccAddr: string;
     bech32PrefixAccPub: string;
     bech32PrefixValAddr: string;

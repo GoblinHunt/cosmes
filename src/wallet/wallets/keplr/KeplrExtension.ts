@@ -21,6 +21,7 @@ import {
   UnsignedTx,
 } from "../ConnectedWallet";
 import { WalletError } from "../WalletError";
+import { AddChainInfo } from "cosmes/wallet/walletconnect/WalletConnectV2";
 
 export class KeplrExtension extends ConnectedWallet {
   private readonly ext: Keplr;
@@ -66,6 +67,10 @@ export class KeplrExtension extends ConnectedWallet {
       pubKey: res.pub_key.value,
       signature: res.signature,
     };
+  }
+
+  public async addChain(chainInfo: AddChainInfo): Promise<void> {
+    await WalletError.wrap(this.ext.experimentalSuggestChain(chainInfo));
   }
 
   protected async signAndBroadcastTx(
