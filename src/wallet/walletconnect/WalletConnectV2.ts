@@ -52,6 +52,8 @@ const Method = {
   GET_ACCOUNTS: "cosmos_getAccounts",
   SIGN_AMINO: "cosmos_signAmino",
   SIGN_DIRECT: "cosmos_signDirect",
+  SIGN_ARBITRARY: "keplr_signArbitrary",
+  ADD_CHAIN: "keplr_experimentalSuggestChain",
 } as const;
 type Method = (typeof Method)[keyof typeof Method];
 
@@ -60,6 +62,49 @@ const Event = {
   ACCOUNTS_CHANGED: "accountsChanged",
 } as const;
 type Event = (typeof Event)[keyof typeof Event];
+
+export type AddChainInfo = {
+  chainId: string;
+  chainName: string;
+  rpc: string;
+  rest: string;
+  stakeCurrency?: {
+    coinDenom: string;
+    coinMinimalDenom: string;
+    coinDecimals: number;
+    coinGeckoId: string;
+  };
+  bip44: {
+    coinType: number;
+  };
+  bech32Config?: {
+    bech32PrefixAccAddr: string;
+    bech32PrefixAccPub: string;
+    bech32PrefixValAddr: string;
+    bech32PrefixValPub: string;
+    bech32PrefixConsAddr: string;
+    bech32PrefixConsPub: string;
+  };
+  currencies: Array<{
+    coinDenom: string;
+    coinMinimalDenom: string;
+    coinDecimals: number;
+    coinGeckoId: string;
+  }>;
+  feeCurrencies: Array<{
+    coinDenom: string;
+    coinMinimalDenom: string;
+    coinDecimals: number;
+    coinGeckoId: string;
+    gasPriceStep: {
+      low: number;
+      average: number;
+      high: number;
+    };
+  }>;
+  features?: string[];
+  isBeta?: boolean;
+};
 
 const DEFAULT_SIGN_OPTIONS = {
   preferNoSetFee: true,
@@ -85,6 +130,16 @@ export class WalletConnectV2 {
     this.onAccountChangeCbs = new Set();
     this.signClient = null;
     this.config = config
+  }
+
+  public async addChain(chainId: string, chainInfo: AddChainInfo): Promise<void> {
+    if (!this.signClient) {
+      throw new Error("SignClient is not initialized");
+    }
+
+    await this.request<void>(chainId, Method.ADD_CHAIN, {
+      chainInfo
+    });
   }
 
   public async connect(chainIds: string[]): Promise<void> {
@@ -238,6 +293,19 @@ export class WalletConnectV2 {
       }
       throw e;
     }
+  }
+
+  public async signArbitrary(
+    chainId: string,
+    signerAddress: string,
+    data: string
+  ): Promise<{ signature: string }> {
+    return this.request<{ signature: string }>(chainId, Method.SIGN_ARBITRARY, {
+      chainId,
+      signer: signerAddress,
+      type: 'string',
+      data,
+    });
   }
 
   public async signAmino(

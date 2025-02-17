@@ -1,4 +1,5 @@
 import { PlainMessage } from "@bufbuild/protobuf";
+import { base64, utf8 } from "@scure/base";
 import {
   RpcClient,
   Secp256k1PubKey,
@@ -18,7 +19,7 @@ import {
   SignArbitraryResponse,
   UnsignedTx,
 } from "../ConnectedWallet";
-import { WalletConnectV2 } from "../../walletconnect/WalletConnectV2";
+import { AddChainInfo, WalletConnectV2 } from "../../walletconnect/WalletConnectV2";
 
 export class KeplrWalletConnectV2 extends ConnectedWallet {
   private readonly wc: WalletConnectV2;
@@ -49,10 +50,18 @@ export class KeplrWalletConnectV2 extends ConnectedWallet {
     this.useAmino = useAmino;
   }
 
-  public async signArbitrary(_data: string): Promise<SignArbitraryResponse> {
-    // ! Not implemented by Keplr
-    // https://github.com/chainapsis/keplr-wallet/blob/master/packages/wc-client/src/index.ts#L379
-    throw new Error("Method not implemented.");
+  public async signArbitrary(data: string): Promise<SignArbitraryResponse> {
+    const { signature } = await WalletError.wrap(this.wc.signArbitrary(this.chainId, this.address, data));
+
+    return {
+      data,
+      pubKey: base64.encode(this.pubKey.toProto().key),
+      signature,
+    }
+  }
+
+  public async addChain(chainInfo: AddChainInfo): Promise<void> {
+    await this.wc.addChain(this.chainId, chainInfo);
   }
 
   public async signAndBroadcastTx(

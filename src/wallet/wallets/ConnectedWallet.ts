@@ -19,6 +19,7 @@ import {
 import type { WalletName } from "../constants/WalletName";
 import type { WalletType } from "../constants/WalletType";
 import { extractExpectedAccountSequence } from "../utils/sequence";
+import { AddChainInfo } from "../walletconnect/WalletConnectV2";
 
 export type UnsignedTx = {
   msgs: Adapter[];
@@ -205,6 +206,11 @@ export abstract class ConnectedWallet {
         : feeOrFeeMultiplier;
     const txHash = await this.broadcastTx(unsignedTx, fee);
     return this.pollTx(txHash, pollOpts);
+  }
+
+  public async addChain(chainInfo: AddChainInfo): Promise<void> {
+    // ! Not implemented by all wallets
+    throw new Error("Method not implemented.");
   }
 
   /**
