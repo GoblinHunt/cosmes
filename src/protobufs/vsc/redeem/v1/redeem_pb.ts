@@ -5,6 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
+import { Coin } from "../../../cosmos/base/v1beta1/coin_pb.js";
 
 /**
  * Params defines the set of VSG redeem parameters.
@@ -22,6 +23,16 @@ export class Params extends Message<Params> {
    */
   receiveEnabled = false;
 
+  /**
+   * @generated from field: cosmos.base.v1beta1.Coin fee = 3;
+   */
+  fee?: Coin;
+
+  /**
+   * @generated from field: string fee_recipient = 4;
+   */
+  feeRecipient = "";
+
   constructor(data?: PartialMessage<Params>) {
     super();
     proto3.util.initPartial(data, this);
@@ -32,6 +43,8 @@ export class Params extends Message<Params> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "send_enabled", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 2, name: "receive_enabled", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 3, name: "fee", kind: "message", T: Coin },
+    { no: 4, name: "fee_recipient", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Params {

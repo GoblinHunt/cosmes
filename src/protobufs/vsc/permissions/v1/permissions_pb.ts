@@ -26,6 +26,11 @@ export class PermissionEntry extends Message<PermissionEntry> {
    */
   feeFactor = "";
 
+  /**
+   * @generated from field: bool is_recipient = 3;
+   */
+  isRecipient = false;
+
   constructor(data?: PartialMessage<PermissionEntry>) {
     super();
     proto3.util.initPartial(data, this);
@@ -36,6 +41,7 @@ export class PermissionEntry extends Message<PermissionEntry> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "account", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "fee_factor", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "is_recipient", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PermissionEntry {
