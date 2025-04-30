@@ -73,6 +73,10 @@ export class KeplrExtension extends ConnectedWallet {
     await WalletError.wrap(this.ext.experimentalSuggestChain(chainInfo));
   }
 
+  public getOfflineSigner() {
+    return this.ext.getOfflineSigner(this.chainId);
+  }
+
   protected async signAndBroadcastTx(
     { msgs, memo, timeoutHeight }: UnsignedTx,
     fee: Fee,

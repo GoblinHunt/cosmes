@@ -113,6 +113,10 @@ export class MetamaskInjectiveExtension extends ConnectedWallet {
     return RpcClient.broadcastTx(this.rpc, txRaw);
   }
 
+  public getOfflineSigner(): unknown {
+    throw new WalletError("MetaMask does not support offline signing", null);
+  }
+
   /**
    * Returns the TypedData to be signed by MetaMask's `eth_signTypedData_v4` method.
    *

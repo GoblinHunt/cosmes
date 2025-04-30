@@ -73,6 +73,10 @@ export class LUNCDashWalletConnectV1 extends ConnectedWallet {
     );
     return txhash;
   }
+  
+  public async getOfflineSigner(): Promise<unknown> {
+    throw new WalletError("LUNCDash does not support offline signing", null);
+  }
 
   private async sendRequest<T>(method: string, params: unknown): Promise<T> {
     // https://github.com/terra-money/wallet-provider/blob/interchain-wallet-provider/packages/src/%40terra-money/wallet-controller/modules/walletconnect/connect.ts#L327-L352

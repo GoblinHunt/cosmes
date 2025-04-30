@@ -51,6 +51,10 @@ export class DaoDaoExtension extends ConnectedWallet {
     throw new WalletError("DAO DAO does not support arbitrary signing", null);
   }
 
+  public getOfflineSigner() {
+    return this.ext.getOfflineSigner(this.chainId);
+  }
+
   public async addChain(_chainInfo: AddChainInfo): Promise<void> {
     throw new WalletError("DAO DAO does not support adding chains", null);
   }

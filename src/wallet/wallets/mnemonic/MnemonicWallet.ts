@@ -123,6 +123,10 @@ export class MnemonicWallet extends ConnectedWallet {
     throw new Error("Mnemonic wallet does not support adding chains");
   }
 
+  public async getOfflineSigner(): Promise<unknown> {
+    throw new Error("Mnemonic wallet does not support offline signing");
+  }
+
   public async signArbitrary(data: string): Promise<SignArbitraryResponse> {
     // This sign doc follows ADR 036 specs.
     // See: https://github.com/cosmos/cosmos-sdk/blob/main/docs/architecture/adr-036-arbitrary-signature.md

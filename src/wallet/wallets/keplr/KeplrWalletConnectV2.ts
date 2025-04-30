@@ -64,6 +64,10 @@ export class KeplrWalletConnectV2 extends ConnectedWallet {
     await this.wc.addChain(this.chainId, chainInfo);
   }
 
+  public async getOfflineSigner(): Promise<unknown> {
+    throw new WalletError("Keplr does not support offline signing", null);
+  }
+
   public async signAndBroadcastTx(
     { msgs, memo, timeoutHeight }: UnsignedTx,
     fee: Fee,

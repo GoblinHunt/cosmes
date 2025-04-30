@@ -49,6 +49,10 @@ export class StationWalletConnectV1 extends ConnectedWallet {
     throw new WalletError("Station does not support adding chains", null);
   }
 
+  public async getOfflineSigner(): Promise<unknown> {
+    throw new WalletError("Station does not support offline signing", null);
+  }
+
   public async signArbitrary(data: string): Promise<SignArbitraryResponse> {
     const res = await this.sendRequest<SignBytesResponse>(
       "signBytes",

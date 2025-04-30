@@ -211,6 +211,12 @@ export abstract class ConnectedWallet {
   public abstract addChain(chainInfo: AddChainInfo): Promise<void>;
 
   /**
+   * Returns an offline signer for the connected wallet. This is used to sign
+   * transactions without broadcasting them.
+   */
+  public abstract getOfflineSigner(): unknown;
+
+  /**
    * Signs the UTF-8 encoded `data` string. Note that some mobile wallets do not
    * support this method.
    *
