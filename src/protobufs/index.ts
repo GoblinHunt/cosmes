@@ -307,29 +307,6 @@ export {
   Module as VscEpochsModuleModule,
 } from "./vsc/epochs/module/module_pb.js";
 export {
-  MsgUpdateParams as VscDrandMsgUpdateParams,
-  MsgUpdateParamsResponse as VscDrandMsgUpdateParamsResponse,
-} from "./vsc/drand/tx_pb.js";
-export {
-  MsgUpdateParamsService as VscDrandMsgUpdateParamsService,
-} from "./vsc/drand/tx_cosmes.js";
-export {
-  QueryParamsRequest as VscDrandQueryParamsRequest,
-  QueryParamsResponse as VscDrandQueryParamsResponse,
-} from "./vsc/drand/query_pb.js";
-export {
-  QueryParamsService as VscDrandQueryParamsService,
-} from "./vsc/drand/query_cosmes.js";
-export {
-  Params as VscDrandParams,
-} from "./vsc/drand/params_pb.js";
-export {
-  GenesisState as VscDrandGenesisState,
-} from "./vsc/drand/genesis_pb.js";
-export {
-  Module as VscDrandModuleModule,
-} from "./vsc/drand/module/module_pb.js";
-export {
   PubKey as VscCryptoV1Ethsecp256k1PubKey,
   PrivKey as VscCryptoV1Ethsecp256k1PrivKey,
 } from "./vsc/crypto/v1/ethsecp256k1/keys_pb.js";
