@@ -15,6 +15,7 @@ import {
   CosmosTxV1beta1Fee as Fee,
   CosmosTxV1beta1GetTxResponse as GetTxResponse,
 } from "cosmes/protobufs";
+import { useChainSdkVersion } from "cosmes/protobufs";
 
 import type { WalletName } from "../constants/WalletName";
 import type { WalletType } from "../constants/WalletType";
@@ -58,7 +59,7 @@ export abstract class ConnectedWallet {
   /** The RPC endpoint to use for interacting with the chain. */
   public readonly rpc: string;
   /** The gas price to use for transactions. */
-  public readonly gasPrice: Coin;
+  public gasPrice: Coin;
   private accountNumber: bigint | undefined;
   private sequence: bigint | undefined;
 
@@ -80,6 +81,11 @@ export abstract class ConnectedWallet {
     this.address = address;
     this.rpc = rpc;
     this.gasPrice = new Coin(gasPrice);
+    this.useSdkVersion();
+  }
+
+  private useSdkVersion() {
+    useChainSdkVersion(this.chainId);
   }
 
   /**
@@ -93,6 +99,7 @@ export abstract class ConnectedWallet {
     accountNumber: bigint;
     sequence: bigint;
   }> {
+    this.useSdkVersion();
     if (!this.accountNumber || !this.sequence || !fromCache) {
       const account = await getAccount(this.rpc, { address: this.address });
       const { accountNumber, sequence } = toBaseAccount(account);
@@ -114,6 +121,7 @@ export abstract class ConnectedWallet {
     { msgs, memo }: UnsignedTx,
     feeMultiplier = 1.4
   ): Promise<Fee> {
+    this.useSdkVersion();
     const estimate = async () => {
       const { sequence } = await this.getAuthInfo(true);
       const { gasInfo } = await simulateTx(this.rpc, {
@@ -159,6 +167,7 @@ export abstract class ConnectedWallet {
    * @throws if the tx fails to broadcast.
    */
   public async broadcastTx(unsignedTx: UnsignedTx, fee: Fee): Promise<string> {
+    this.useSdkVersion();
     const { accountNumber, sequence } = await this.getAuthInfo(true);
     const hash = await this.signAndBroadcastTx(
       unsignedTx,
@@ -182,6 +191,7 @@ export abstract class ConnectedWallet {
     txHash: string,
     { maxAttempts, intervalSeconds }: PollTxOptions = {}
   ): Promise<Required<PlainMessage<GetTxResponse>>> {
+    this.useSdkVersion();
     return pollTx(this.rpc, {
       hash: txHash,
       maxAttempts,
@@ -200,12 +210,18 @@ export abstract class ConnectedWallet {
     feeOrFeeMultiplier: Fee | number = 1.4,
     pollOpts: PollTxOptions = {}
   ): Promise<Required<PlainMessage<GetTxResponse>>> {
+    this.useSdkVersion();
     const fee =
       typeof feeOrFeeMultiplier === "number"
         ? await this.estimateFee(unsignedTx, feeOrFeeMultiplier)
         : feeOrFeeMultiplier;
     const txHash = await this.broadcastTx(unsignedTx, fee);
     return this.pollTx(txHash, pollOpts);
+  }
+
+  public setGasPrice(gasPrice: PlainMessage<Coin>) {
+    this.useSdkVersion();
+    this.gasPrice = new Coin(gasPrice);
   }
 
   public abstract addChain(chainInfo: AddChainInfo): Promise<void>;

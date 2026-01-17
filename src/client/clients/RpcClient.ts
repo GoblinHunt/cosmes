@@ -1,6 +1,7 @@
 import { JsonValue, Message, PartialMessage } from "@bufbuild/protobuf";
 import { base16, base64 } from "cosmes/codec";
 import { CosmosTxV1beta1TxRaw as TxRaw } from "cosmes/protobufs";
+import { useEndpointSdkVersion } from "cosmes/protobufs";
 
 import { FetchClient } from "./FetchClient";
 
@@ -93,6 +94,7 @@ export class RpcClient {
     { typeName, method, Request, Response }: QueryService<T, U>,
     requestMsg: RequestMessage<T>
   ): Promise<U> {
+    useEndpointSdkVersion(endpoint);
     const { response } = await this.doRequest<QueryResult>(
       endpoint,
       "abci_query",
@@ -117,6 +119,7 @@ export class RpcClient {
     endpoint: string,
     txRaw: TxRaw
   ): Promise<string> {
+    useEndpointSdkVersion(endpoint);
     const { code, log, hash } = await this.doRequest<BroadcastTxResult>(
       endpoint,
       "broadcast_tx_sync",
@@ -134,6 +137,7 @@ export class RpcClient {
    * Creates a new ABCI batch query.
    */
   public static newBatchQuery(endpoint: string): BatchQuery {
+    useEndpointSdkVersion(endpoint);
     return new BatchQuery(endpoint);
   }
 }
@@ -151,6 +155,7 @@ class BatchQuery {
 
   constructor(endpoint: string) {
     this.endpoint = endpoint;
+    useEndpointSdkVersion(endpoint);
   }
 
   /**

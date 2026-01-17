@@ -1,6 +1,6 @@
 {
   "name": "@goblinhunt/cosmes",
-  "version": "0.0.71-ghunt.17",
+  "version": "0.0.71-ghunt.21",
   "private": false,
   "packageManager": "pnpm@8.3.0",
   "sideEffects": false,
@@ -13,6 +13,8 @@
     "./client": "./dist/client/index.js",
     "./codec": "./dist/codec/index.js",
     "./protobufs": "./dist/protobufs/index.js",
+    "./protobufs/sdk47": "./dist/protobufs/sdk47/index.js",
+    "./protobufs/sdk53": "./dist/protobufs/sdk53/index.js",
     "./registry": "./dist/registry/index.js",
     "./wallet": "./dist/wallet/index.js"
   },

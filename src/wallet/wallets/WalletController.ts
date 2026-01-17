@@ -1,5 +1,12 @@
 import type { PlainMessage } from "@bufbuild/protobuf";
 import type { CosmosBaseV1beta1Coin as Coin } from "cosmes/protobufs";
+import {
+  getActiveSdkVersion,
+  setActiveSdkVersion,
+  setChainSdkVersion,
+  setEndpointSdkVersion,
+  type SdkVersion,
+} from "cosmes/protobufs";
 
 import type { WalletName } from "../constants/WalletName";
 import { WalletType } from "../constants/WalletType";
@@ -23,6 +30,11 @@ export type ChainInfo<T extends string> = {
    * The current gas price of the chain.
    */
   gasPrice: PlainMessage<Coin>;
+  /**
+   * The Cosmos SDK version used by the chain.
+   * Defaults to "sdk47" if unspecified.
+   */
+  sdkVersion?: SdkVersion | undefined;
 };
 
 export type EventCallback = (wallets: ConnectedWallet[]) => unknown;
@@ -63,6 +75,14 @@ export abstract class WalletController {
   ): Promise<Map<T, ConnectedWallet>> {
     if (chains.length === 0) {
       return new Map();
+    }
+    for (const { chainId, sdkVersion, rpc } of chains) {
+      const resolved = sdkVersion ?? "sdk47";
+      setChainSdkVersion(chainId, resolved);
+      setEndpointSdkVersion(rpc, resolved);
+      if (getActiveSdkVersion() !== resolved) {
+        setActiveSdkVersion(resolved);
+      }
     }
     let connectedWallets: Map<T, ConnectedWallet>;
     if (type === WalletType.EXTENSION) {

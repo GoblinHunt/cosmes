@@ -9,6 +9,7 @@ import {
   CosmosTxV1beta1TxBody as ProtoTxBody,
   CosmosTxV1beta1TxRaw as ProtoTxRaw,
 } from "cosmes/protobufs";
+import { useChainSdkVersion } from "cosmes/protobufs";
 import { SignDoc, StdSignDoc } from "cosmes/registry";
 
 import { toAny } from "../utils/toAny";
@@ -51,6 +52,7 @@ export class Tx {
 
   constructor(data: Data) {
     this.data = data;
+    useChainSdkVersion(this.data.chainId);
   }
 
   /**
