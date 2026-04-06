@@ -150,7 +150,7 @@ This directory is a [Cosmos Kit](https://cosmoskit.com) alternative to interact 
 - [Cosmostation](https://wallet.cosmostation.io/)
 - [OWallet](https://owallet.dev/)
 - [Compass](https://compasswallet.io/) (for Sei only)
-- [MetaMask](https://metamask.io/) (for Injective only)
+- [MetaMask](https://metamask.io/) (for EVM chains; Injective supported via `MetamaskInjectiveController`)
 - [Ninji](https://ninji.xyz/) (for Injective only)
 
 **Features**:

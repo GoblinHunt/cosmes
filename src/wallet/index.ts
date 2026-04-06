@@ -3,6 +3,14 @@ export { WalletType } from "./constants/WalletType";
 export { isAndroid, isIOS, isMobile } from "./utils/os";
 export { verifyArbitrary } from "./utils/verify";
 export {
+  MetamaskEvmController,
+  type EvmChainInfo,
+  type EvmEventCallback,
+  type EvmTxRequest,
+  type HexString,
+  MetamaskEvmWallet,
+} from "./evm/MetamaskEvmController";
+export {
   ConnectedWallet,
   type PollTxOptions,
   type SignArbitraryResponse,
