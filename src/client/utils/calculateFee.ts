@@ -13,14 +13,19 @@ export function calculateFee(
   { amount, denom }: Coin,
   multiplier = 1.4
 ): Fee {
-  const gasLimit = Number(gasUsed) * multiplier;
+  const scaled = BigInt(Math.round(multiplier * 100));
+  const gasLimit = ceilDiv(gasUsed * scaled, 100n);
   return new Fee({
     amount: [
       {
-        amount: Math.ceil(gasLimit * Number(amount)).toFixed(0),
+        amount: (gasLimit * BigInt(amount)).toString(),
         denom: denom,
       },
     ],
-    gasLimit: BigInt(Math.floor(gasLimit)),
+    gasLimit: gasLimit,
   });
+}
+
+function ceilDiv(x: bigint, y: bigint): bigint {
+  return x / y + (x % y === 0n ? 0n : 1n);
 }
